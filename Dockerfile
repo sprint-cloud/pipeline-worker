@@ -29,7 +29,7 @@ RUN sha256sum --ignore-missing -c coder_${coder_version}_checksums.txt && tar xz
 
 # Install vcluster client
 RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"\
-    && sudo install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster
+    && install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster
 
 WORKDIR /
 RUN rm -rf /tmp/build

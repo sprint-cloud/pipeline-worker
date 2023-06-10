@@ -25,7 +25,11 @@ RUN sha256sum --ignore-missing -c argocd-${argocd_version}-checksums.txt && inst
 RUN curl -LO https://github.com/coder/coder/releases/download/v${coder_version}/coder_${coder_version}_linux_amd64.tar.gz\
     && curl -LO https://github.com/coder/coder/releases/download/v0.24.0/coder_${coder_version}_checksums.txt
 RUN sha256sum --ignore-missing -c coder_${coder_version}_checksums.txt && tar xzf coder_${coder_version}_linux_amd64.tar.gz\
-    && install -o root -g root -m 0755 coder /usr/local/bin/coder
+    && install -o root -g root -m 0755 coder /usr/local/bin/
+
+# Install vcluster client
+RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"\
+    && sudo install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster
 
 WORKDIR /
 RUN rm -rf /tmp/build

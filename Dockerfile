@@ -26,3 +26,6 @@ RUN curl -LO https://github.com/coder/coder/releases/download/v${coder_version}/
     && curl -LO https://github.com/coder/coder/releases/download/v0.24.0/coder_${coder_version}_checksums.txt
 RUN sha256sum --ignore-missing -c coder_${coder_version}_checksums.txt && tar xzf coder_${coder_version}_linux_amd64.tar.gz\
     && install -o root -g root -m 0755 coder /usr/local/bin/coder
+
+WORKDIR /
+RUN rm -rf /tmp/build

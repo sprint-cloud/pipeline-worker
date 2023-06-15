@@ -4,6 +4,7 @@ ARG tekton_version=0.30.0
 ARG knative_version=1.9.2
 ARG argocd_version=2.6.7
 ARG coder_version=0.24.0
+ARG helm_version=3.12.1
 
 WORKDIR /tmp/build
 RUN apk update && apk add curl coreutils
@@ -26,6 +27,12 @@ RUN curl -LO https://github.com/coder/coder/releases/download/v${coder_version}/
     && curl -LO https://github.com/coder/coder/releases/download/v0.24.0/coder_${coder_version}_checksums.txt
 RUN sha256sum --ignore-missing -c coder_${coder_version}_checksums.txt && tar xzf coder_${coder_version}_linux_amd64.tar.gz\
     && install -o root -g root -m 0755 coder /usr/local/bin/
+
+# Install Helm
+RUN curl -LO https://get.helm.sh/helm-v${helm_version}-linux-amd64.tar.gz\
+    && curl -LO https://get.helm.sh/helm-v${helm_version}-linux-amd64.tar.gz.sha256sum
+RUN sha256sum --ignore-missing -c helm-v${helm_version}-linux-amd64.tar.gz.sha256sum\
+    && tar xzf helm-v${helm_version}-linux-amd64.tar.gz && install -o root -g root -m 0755 linux-amd64/helm /usr/local/bin/helm
 
 # Install vcluster client
 RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"\

@@ -35,5 +35,5 @@ RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/dow
 
 RUN rm -rf /tmp/build
 
-USER worker
+USER 1000
 WORKDIR /home/worker

@@ -8,6 +8,8 @@ ARG coder_version=0.24.0
 WORKDIR /tmp/build
 RUN apk update && apk add curl coreutils
 
+RUN adduser -D worker
+
 # Install Kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" && \
@@ -31,5 +33,7 @@ RUN sha256sum --ignore-missing -c coder_${coder_version}_checksums.txt && tar xz
 RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"\
     && install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster
 
-WORKDIR /
 RUN rm -rf /tmp/build
+
+USER worker
+WORKDIR /home/worker

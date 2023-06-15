@@ -9,6 +9,8 @@ ARG helm_version=3.12.1
 WORKDIR /tmp/build
 RUN apk update && apk add curl coreutils
 
+RUN adduser -D worker
+
 # Install Kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" && \
@@ -38,5 +40,7 @@ RUN sha256sum --ignore-missing -c helm-v${helm_version}-linux-amd64.tar.gz.sha25
 RUN curl -L -o vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"\
     && install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster
 
-WORKDIR /
 RUN rm -rf /tmp/build
+
+USER 1000
+WORKDIR /home/worker
